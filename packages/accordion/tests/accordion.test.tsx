@@ -1,5 +1,6 @@
 import * as React from "react"
 import {
+  act,
   userEvent,
   render,
   fireEvent,
@@ -64,16 +65,16 @@ test("uncontrolled: toggles the accordion on click", async () => {
 
   const trigger = screen.getByText("Trigger")
 
-  userEvent.click(trigger)
+  await act(() => userEvent.click(trigger))
   expect(trigger).toHaveAttribute("aria-expanded", "true")
 
   // you can't toggle an accordion without passing `allowToggle`
-  userEvent.click(trigger)
+  await act(() => userEvent.click(trigger))
   expect(trigger).toHaveAttribute("aria-expanded", "true")
 })
 
 // test that arrow up & down moves focus to next/previous accordion
-test("arrow up & down moves focus to next/previous accordion", () => {
+test("arrow up & down moves focus to next/previous accordion", async () => {
   render(
     <Accordion>
       <AccordionItem>
@@ -92,15 +93,19 @@ test("arrow up & down moves focus to next/previous accordion", () => {
   const first = screen.getByText("Section 1 title")
   const second = screen.getByText("Section 2 title")
 
-  fireEvent.keyDown(first, { key: "ArrowDown", keyCode: 40 })
+  act(() => {
+    fireEvent.keyDown(first, { key: "ArrowDown", keyCode: 40 })
+  })
   expect(second).toHaveFocus()
 
-  fireEvent.keyDown(second, { key: "ArrowUp", keyCode: 38 })
+  act(() => {
+    fireEvent.keyDown(second, { key: "ArrowUp", keyCode: 38 })
+  })
   expect(first).toHaveFocus()
 })
 
 // test that home & end keys moves focus to first/last accordion
-test("home & end keys moves focus to first/last accordion", () => {
+test("home & end keys moves focus to first/last accordion", async () => {
   render(
     <Accordion>
       <AccordionItem>
@@ -128,15 +133,19 @@ test("home & end keys moves focus to first/last accordion", () => {
   const first = screen.getByText("First section")
   const last = screen.getByText("Last section")
 
-  fireEvent.keyDown(first, { key: "Home", keyCode: 36 })
+  act(() => {
+    fireEvent.keyDown(first, { key: "Home", keyCode: 36 })
+  })
   expect(first).toHaveFocus()
 
-  fireEvent.keyDown(first, { key: "End", keyCode: 35 })
+  act(() => {
+    fireEvent.keyDown(first, { key: "End", keyCode: 35 })
+  })
   expect(last).toHaveFocus()
 })
 
 // test the only one accordion can be visible + is not togglable
-test("only one accordion can be visible + is not togglable", () => {
+test("only one accordion can be visible + is not togglable", async () => {
   render(
     <Accordion>
       <AccordionItem>
@@ -157,14 +166,14 @@ test("only one accordion can be visible + is not togglable", () => {
 
   const firstAccordion = screen.getByText("First section")
 
-  userEvent.click(firstAccordion)
+  await act(() => userEvent.click(firstAccordion))
   expect(firstAccordion).toHaveAttribute("aria-expanded", "true")
 
-  userEvent.click(firstAccordion)
+  await act(() => userEvent.click(firstAccordion))
   expect(firstAccordion).toHaveAttribute("aria-expanded", "true")
 })
 // test the only one accordion can be visible + is togglable
-test("only one accordion can be visible + is togglable", () => {
+test("only one accordion can be visible + is togglable", async () => {
   render(
     <Accordion allowToggle>
       <AccordionItem>
@@ -185,15 +194,15 @@ test("only one accordion can be visible + is togglable", () => {
 
   const firstAccordion = screen.getByText("First section")
 
-  userEvent.click(firstAccordion)
+  await act(() => userEvent.click(firstAccordion))
   expect(firstAccordion).toHaveAttribute("aria-expanded", "true")
 
-  userEvent.click(firstAccordion)
+  await act(() => userEvent.click(firstAccordion))
   expect(firstAccordion).toHaveAttribute("aria-expanded", "false")
 })
 
 // test that multiple accordions can be opened + is togglable
-test("multiple accordions can be opened + is togglable", () => {
+test("multiple accordions can be opened + is togglable", async () => {
   render(
     <Accordion allowMultiple>
       <AccordionItem>
@@ -215,10 +224,10 @@ test("multiple accordions can be opened + is togglable", () => {
   const firstAccordion = screen.getByText("First section")
   const secondAccordion = screen.getByText("Second section")
 
-  userEvent.click(firstAccordion)
+  await act(() => userEvent.click(firstAccordion))
   expect(firstAccordion).toHaveAttribute("aria-expanded", "true")
 
-  userEvent.click(secondAccordion)
+  await act(() => userEvent.click(secondAccordion))
   expect(firstAccordion).toHaveAttribute("aria-expanded", "true")
 })
 
@@ -243,7 +252,7 @@ test("has the proper aria attributes", () => {
 })
 
 // test that tab moves focus to the next focusable element
-test("tab moves focus to the next focusable element", () => {
+test("tab moves focus to the next focusable element", async () => {
   render(
     <Accordion>
       <AccordionItem>
@@ -272,18 +281,18 @@ test("tab moves focus to the next focusable element", () => {
   const second = screen.getByText("Second section")
   const last = screen.getByText("Last section")
 
-  userEvent.tab()
+  await act(() => userEvent.tab())
   expect(first).toHaveFocus()
 
-  userEvent.tab()
+  await act(() => userEvent.tab())
   expect(second).toHaveFocus()
 
-  userEvent.tab()
+  await act(() => userEvent.tab())
   expect(last).toHaveFocus()
 })
 
 // test that aria-contols for button is same as id for panel
-test("aria-contols for button is same as id for panel", () => {
+test("aria-contols for button is same as id for panel", async () => {
   render(
     <Accordion>
       <AccordionItem>
