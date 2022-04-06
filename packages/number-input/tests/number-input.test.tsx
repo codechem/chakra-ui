@@ -8,9 +8,10 @@ import {
   renderHook,
   userEvent,
   press,
+  screen,
 } from "@chakra-ui/test-utils"
 import * as React from "react"
-import { screen } from "@testing-library/react"
+
 import {
   NumberDecrementStepper,
   NumberIncrementStepper,
@@ -146,17 +147,17 @@ it("should behave properly with precision value", async () => {
   const decBtn = screen.getByTestId("down-btn")
 
   expect(input).toHaveValue("0.00")
-  await act(() => userEvent.click(incBtn))
+  await userEvent.click(incBtn)
   expect(input).toHaveValue("0.65")
-  await act(() => userEvent.click(incBtn))
+  await userEvent.click(incBtn)
   expect(input).toHaveValue("1.30")
-  await act(() => userEvent.click(incBtn))
+  await userEvent.click(incBtn)
   expect(input).toHaveValue("1.95")
-  await act(() => userEvent.click(decBtn))
+  await userEvent.click(decBtn)
   expect(input).toHaveValue("1.30")
 
   // on blur, value is clamped using precision
-  await act(() => userEvent.type(input, "1234"))
+  await userEvent.type(input, "1234")
   expect(input).toHaveValue("1.301234")
   act(() => {
     fireEvent.blur(input)
@@ -170,7 +171,7 @@ test("should call onChange on value change", async () => {
 
   const upBtn = screen.getByTestId("up-btn")
 
-  await act(() => userEvent.click(upBtn))
+  await userEvent.click(upBtn)
 
   expect(onChange).toBeCalled()
   expect(onChange).toBeCalledWith("1", 1)
@@ -181,7 +182,7 @@ test("should constrain value onBlur", async () => {
 
   const input = screen.getByTestId("input")
 
-  await act(() => userEvent.type(input, "34.55"))
+  await userEvent.type(input, "34.55")
 
   // value is beyond max so it should reset to `max`
   act(() => {
@@ -255,7 +256,7 @@ test("should derive values from surrounding FormControl", () => {
 test("should fallback to min if `e` is typed", async () => {
   renderComponent({ max: 30, min: 1 })
   const input = screen.getByTestId("input")
-  await act(() => userEvent.type(input, "e"))
+  await userEvent.type(input, "e")
   // value is beyond max so it should reset to `max`
   act(() => {
     fireEvent.blur(input)

@@ -65,11 +65,11 @@ test("uncontrolled: toggles the accordion on click", async () => {
 
   const trigger = screen.getByText("Trigger")
 
-  await act(() => userEvent.click(trigger))
+  await userEvent.click(trigger)
   expect(trigger).toHaveAttribute("aria-expanded", "true")
 
   // you can't toggle an accordion without passing `allowToggle`
-  await act(() => userEvent.click(trigger))
+  await userEvent.click(trigger)
   expect(trigger).toHaveAttribute("aria-expanded", "true")
 })
 
@@ -166,10 +166,10 @@ test("only one accordion can be visible + is not togglable", async () => {
 
   const firstAccordion = screen.getByText("First section")
 
-  await act(() => userEvent.click(firstAccordion))
+  await userEvent.click(firstAccordion)
   expect(firstAccordion).toHaveAttribute("aria-expanded", "true")
 
-  await act(() => userEvent.click(firstAccordion))
+  await userEvent.click(firstAccordion)
   expect(firstAccordion).toHaveAttribute("aria-expanded", "true")
 })
 // test the only one accordion can be visible + is togglable
@@ -194,10 +194,10 @@ test("only one accordion can be visible + is togglable", async () => {
 
   const firstAccordion = screen.getByText("First section")
 
-  await act(() => userEvent.click(firstAccordion))
+  await userEvent.click(firstAccordion)
   expect(firstAccordion).toHaveAttribute("aria-expanded", "true")
 
-  await act(() => userEvent.click(firstAccordion))
+  await userEvent.click(firstAccordion)
   expect(firstAccordion).toHaveAttribute("aria-expanded", "false")
 })
 
@@ -224,10 +224,10 @@ test("multiple accordions can be opened + is togglable", async () => {
   const firstAccordion = screen.getByText("First section")
   const secondAccordion = screen.getByText("Second section")
 
-  await act(() => userEvent.click(firstAccordion))
+  await userEvent.click(firstAccordion)
   expect(firstAccordion).toHaveAttribute("aria-expanded", "true")
 
-  await act(() => userEvent.click(secondAccordion))
+  await userEvent.click(secondAccordion)
   expect(firstAccordion).toHaveAttribute("aria-expanded", "true")
 })
 
@@ -281,13 +281,13 @@ test("tab moves focus to the next focusable element", async () => {
   const second = screen.getByText("Second section")
   const last = screen.getByText("Last section")
 
-  await act(() => userEvent.tab())
+  await userEvent.tab()
   expect(first).toHaveFocus()
 
-  await act(() => userEvent.tab())
+  await userEvent.tab()
   expect(second).toHaveFocus()
 
-  await act(() => userEvent.tab())
+  await userEvent.tab()
   expect(last).toHaveFocus()
 })
 

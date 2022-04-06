@@ -271,22 +271,22 @@ test("when 'trigger'='hover', keep content visible while the tab focus is inside
 
   expect(document.body).toHaveFocus()
 
-  await act(() => userEvent.tab())
+  await userEvent.tab()
 
   expect(openButton).toHaveFocus()
 
   // open the popover and it will have focus and be visible.
-  await act(() => userEvent.tab())
+  await userEvent.tab()
   expect(content).toHaveFocus()
   expect(content).toBeVisible()
 
   // move focus to next focusable element. Popover should be visible still.
-  await act(() => userEvent.tab())
+  await userEvent.tab()
   expect(innerButton).toHaveFocus()
   expect(innerButton).toBeVisible()
 
   // Close the popover. This should make Popover invisible.
-  await act(() => userEvent.tab())
+  await userEvent.tab()
   expect(closeButton).toHaveFocus()
   expect(content).not.toBeVisible()
 })
